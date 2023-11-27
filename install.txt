@@ -1,0 +1,4 @@
+npm install --save-exact @babel/core@7.19.3 @babel/node@7.19.1 @babel/preset-env@7.19.3
+npm install body-parser@1.19.0 dotenv@.2.0 ejs@3.1.5 express@4.1
+npm install --save-dev @babel/core@7.12.10 @babel/node@7.12.10 @babel/preset- env@7.12.10 nodemon@2.0.7
+npm install --save dotenv 
