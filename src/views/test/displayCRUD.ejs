@@ -21,6 +21,11 @@
     tr:nth-child(even) {
       background-color: #dddddd;
     }
+    a{
+        display: inline-block;
+        text-decoration: none;
+        color: none;
+    }
     </style>
 <body>
     <table>
@@ -28,6 +33,8 @@
           <th>Email</th>
           <th>First Name</th>
           <th>Last Name</th>
+          <th>Address</th>
+          <th>Action</th>
         </thead>
         <tbody>
           <% for(let i = 0; i < dataTable.length; i++){%>
@@ -35,6 +42,11 @@
                 <th><%= dataTable[i].email %></th>
                 <th><%= dataTable[i].firstName %></th>
                 <th><%= dataTable[i].lastName %></th>
+                <th><%= dataTable[i].address %></th>
+                <th>
+                    <a href="/edit-crud?id=<%= dataTable[i].id%>" class="btn-edit" type="button">Edit</a>
+                    <a href="/edit-crud?id=<%= dataTable[i].id%>" class="btn-delete" type="button">Delete</a>
+                </th>
             </tr>
           <%}%>
         </tbody>
