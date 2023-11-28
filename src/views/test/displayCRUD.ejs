@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>get CRUD</title>
+</head>
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    </style>
+<body>
+    <table>
+        <thead>
+          <th>Email</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+        </thead>
+        <tbody>
+          <% for(let i = 0; i < dataTable.length; i++){%>
+            <tr>
+                <th><%= dataTable[i].email %></th>
+                <th><%= dataTable[i].firstName %></th>
+                <th><%= dataTable[i].lastName %></th>
+            </tr>
+          <%}%>
+        </tbody>
+      </table>
+</body>
+</html>
