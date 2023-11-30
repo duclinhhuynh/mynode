@@ -37,6 +37,7 @@
           <th>Action</th>
         </thead>
         <tbody>
+          <% if (dataTable && dataTable.length > 0) { %>
           <% for(let i = 0; i < dataTable.length; i++){%>
             <tr>
                 <th><%= dataTable[i].email %></th>
@@ -49,6 +50,9 @@
                 </th>
             </tr>
           <%}%>
+          <% } else { %>
+            <p>No data available</p>
+          <% } %>
         </tbody>
       </table>
 </body>
