@@ -79,4 +79,5 @@ let getAllUsers = (userId) => {
 }
 module.exports = {
     handleUserLogin: handleUserLogin,
+    getAllUsers: getAllUsers,
 }
