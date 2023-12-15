@@ -18,35 +18,37 @@ let hashUserPassword = (password) => {
 let handleUserLogin = (email, password) => {
     return new Promise(async(resolve, reject) => {
         try {
-            let userData  = {};
+            let userInfo  = {};
             let isExit = await checkUserEmail(email)
             if(isExit){
                 let user = await db.User.findOne({
+                    attributes: ['email', 'roleId', 'password', 'firstName', 'lastName'],
                     where: {email : email},
                     raw: true,
                 });
                 if(user){
                     let check  = await bcrypt.compareSync(password,  user.password)
                     if(check){
-                        userData.errCode = 0;
-                        userData.errMessage = 'OK';
+                        userInfo.errCode = 0;
+                        userInfo.errMessage = 'OK';
                         delete user.password;
-                        userData.user = user;
+                        userInfo.user = user;
                     }
                     else{
-                        userData.errCode = 3;
-                        userData.errMessage = 'Wrong password';
+                        userInfo.errCode = 3;
+                        userInfo.errMessage = 'Wrong password';
                     }
                 }else {
-                    userData.errCode = 2;
-                    userData.errMessage = "User is not found"
+                    userInfo.errCode = 2;
+                    userInfo.errMessage = "User is not found"
                 }
                 //    bcrypt.compareSync("not_bacon", hash)//false
             }else{
-                userData.errCode = 1;
-                userData.errMessage = `Your's Email in't exit`
+                userInfo.errCode = 1;
+                userInfo.errMessage = `Your's Email in't exit`
             }
-            resolve(userData)
+            resolve(userInfo)
+            console.log(userInfo.user);
         } catch (error) {
             
         }
@@ -97,27 +99,30 @@ let createNewUser = (data) => {
     return new Promise(async(resolve, reject) => {
         try {
             let check = await checkUserEmail(data.email);
-            if(check == true){
+            if(check === true){
                 resolve({
                     errCode: 1,
                     message: 'Your email is already in used'
                 })
-            }
-            let hashPasswordFromBscrypt = await hashUserPassword(data.password);
-            await db.User.create({
-                email: data.email,
-                password: hashPasswordFromBscrypt,
-                firstName:data.firstName, 
-                lastName: data.lastName,
-                address: data.address,
-                phoneNumber: data.phoneNumber,
-                gender: data.gender === '1' ? true : false ,
-                roleId: data.roleId,
-            })
-            resolve({
-                errCode: 0,
-                message: 'OK'
-            });
+            }else{
+                let hashPasswordFromBscrypt = await hashUserPassword(data.password);
+                await db.User.create({
+                    email: data.email,
+                    password: hashPasswordFromBscrypt,
+                    firstName:data.firstName, 
+                    lastName: data.lastName,
+                    address: data.address,
+                    phoneNumber: data.phoneNumber,
+                    gender: data.gender,
+                    roleId: data.roleId,
+                    positionId: data.positionId,
+                    image: data.avatar,
+                })
+                resolve({
+                    errCode: 0,
+                    message: 'OK'
+                });
+        }
         } catch (error) {
             reject(error)
         }
@@ -152,7 +157,7 @@ let deleteUser = (userId) => {
 let updateUserData = (data) => {
     return new Promise(async(resolve, reject) => {
         try {
-            if(!data.id){
+            if(!data.id || !data.roleId || !data.positionId || !data.gender){
                 resolve({
                     errCode: 2,
                     errMessage: 'Missing required'
@@ -166,7 +171,13 @@ let updateUserData = (data) => {
                 user.firstName = data.firstName;
                 user.lastName =  data.lastName;
                 user.address = data.address;
-
+                user.roleId = data.roleId;
+                user.positionId = data.positionId;
+                user.gender = data.gender;
+                user.phoneNumber = data.phoneNumber;
+                if(data.avatar){
+                    user.image = data.avatar;
+                }
                 await user.save();
                 resolve({
                     errCode: 0,

@@ -10,11 +10,12 @@ let handleLogin = async(req,res) => {
             message: 'missing inputs parameter!'
         })
     }
-    let userData = await userService.handleUserLogin(email, password);
+    let userInfo = await userService.handleUserLogin(email, password);
+    console.log("userinfo",userInfo.user);
     return res.status(200).json({
-        errCode: userData.errCode,
-        message: userData.errMessage,
-        userData
+        errCode: userInfo.errCode,
+        errMessage: userInfo.errMessage,
+        user: userInfo.user,// fix lỗi biến trùng
     });
 }
 let handleGetAllUsers = async(req ,res) => {
@@ -60,7 +61,7 @@ let handleDeleteUser = async(req, res) => {
 let getAllcode = async(req, res) => {
     try {
         let data = await userService.getAllCodeService(req.query.type);
-        console.log(data);
+        console.log("data",data);
         return res.status(200).json(data);
     } catch (error) {
         return res.status(200).json({
